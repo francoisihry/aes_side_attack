@@ -15,7 +15,7 @@ set(CMAKE_CXX_COMPILER ${AVRCPP})
 set(CMAKE_C_COMPILER   ${AVRC})
 set(CMAKE_ASM_COMPILER   ${AVRC})
 
-project (aes C CXX C)
+project (aes_target C CXX C ASM)
 
 # Important project paths
 set(BASE_PATH    "${${PROJECT_NAME}_SOURCE_DIR}")
@@ -32,6 +32,7 @@ file(GLOB SRC_FILES "${SRC_PATH}/*.cpp"
                     "${SRC_PATH}/*.s"
                     "${SRC_PATH}/*.sx"
                     "${SRC_PATH}/*.asm")
+
 
 set(LIB_SRC_FILES)
 set(LIB_INC_PATH)
