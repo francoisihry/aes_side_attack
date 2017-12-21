@@ -112,7 +112,8 @@ extern void uart_gets(char *s,int size)
 	   c=*s;
 	   s++;
    }
-   while (c!='\0' && c!='\n');
+   while (c!='\r');
+   c='\0';
 }
 
 
