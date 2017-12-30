@@ -83,6 +83,8 @@ int main(void) {
 
 	uint8_t plaintext[16]={};
 	uint8_t key[16]={};
+	uint8_t tmpOutput[16];
+	uint8_t expandedKey[240];
 	uart_puts("Welcome on the AES cipher board ! \n");
 	while(1){
 		// char input [50]="\0";
@@ -111,36 +113,12 @@ int main(void) {
 				uart_puts("\nGo, execute AES encryption\n");
 				break;
 			case 'c':
-				uart_puts("\nGet ciphertext, expect 16 bytes corresponding to the ciphertext.\n");
-
-				uint8_t tmpOutput[16];
-				uint8_t expandedKey[240];
-
-				if(aes_expandKey (key, expandedKey, sizeof(expandedKey), AES_TYPE_128)) uart_puts("ya un blem ! \n");
-							else uart_puts("ca roule chef! \n");
+				aes_expandKey (key, expandedKey, sizeof(expandedKey), AES_TYPE_128);
 				aes_encryptWithExpandedKey(tmpOutput, plaintext, expandedKey, AES_TYPE_128);
-					//if(memcmp(aes128TestOutput, tmpOutput, sizeof(tmpOutput)))uart_puts("ya un blem ! \n");
-					//else uart_puts("ca roule chef! \n");
-
-/*
-				if(aes_expandKey (aes128TestKey, expandedKey, sizeof(expandedKey), AES_TYPE_128)) uart_puts("ya un blem ! \n");
-						else uart_puts("ca roule chef! \n");
-				aes_encryptWithExpandedKey(tmpOutput, aesTestInput, expandedKey, AES_TYPE_128);
-				if(memcmp(aes128TestOutput, tmpOutput, sizeof(tmpOutput)))uart_puts("ya un blem ! \n");
-
-				else uart_puts("ca roule chef! \n");*/
-
-					uart_puts("Voici le texte chiffre \n");
-					int i;
-					uart_putc(' ');
-					for (i = 0; i < 16; i++){
-						char c[2]={'K','I'};
-						sprintf(&c, "%02X", tmpOutput[i]);
-						uart_puts(c);
-						uart_putc(' ');
-
-//uint8_t aes192TestOutput[16] = {0xbd,0x33,0x4f,0x1d,0x6e,0x45,0xf2,0x5f,0xf7,0x12,0xa2,0x14,0x57,0x1f,0xa5,0xcc};
-					}
+				int i=0;
+				for (i = 0; i < 16; i++){
+					uart_putc((char)tmpOutput[i]);
+				}
 
 				break;
 			case 'f':
