@@ -99,21 +99,13 @@ extern void uart_gets(char *s,int size)
    unsigned char data;
    unsigned char status;
    unsigned char lastRxError;
-/*
-	while(size>=0)
+
+	while(size>0)
 	{
 	   	*s=uart_getc();
 		s++;
 		size--;
-	}*/
-   char c;
-   do{
-	   *s=uart_getc();
-	   c=*s;
-	   s++;
-   }
-   while (c!='\r');
-   c='\0';
+	}
 }
 
 
