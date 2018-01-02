@@ -98,21 +98,21 @@ int main(void) {
 				break;
 			case 'p':
 				// plaintext[16]: Send plaintext.
-				uart_puts("\nSend plaintext\n");
+				//uart_puts("\nSend plaintext\n");
 				//send_plain_text(input);
 				uart_get_data(plaintext,16);
-				uart_puts("\plaintext received !\n");
+				//uart_puts("\plaintext received !\n");
 				break;
 			case 'k':
 				// 'k' + key[16]: Send key.
-				uart_puts("\nSend key\n");
+				//uart_puts("\nSend key\n");
 				uart_get_data(key,16);
-				uart_puts("\key received !\n");
+				//uart_puts("\key received !\n");
 				//send_key(input);
 				break;
 			case 'g':
 				// 'g' Go, execute AES encryption
-				uart_puts("\nGo, execute AES encryption\n");
+				//uart_puts("\nGo, execute AES encryption\n");
 				aes_128(plaintext, key, ciphertext);
 				break;
 			case 'c':
