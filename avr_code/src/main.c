@@ -74,21 +74,12 @@ void send_ciphertext(uint8_t* ciphertext){
 int main(void) {
 	uart_init(USART_BAUDRATE);
 
-	/*
-	if(aes_expandKey (aes128TestKey, expandedKey, sizeof(expandedKey), AES_TYPE_128)) uart_puts("ya un blem ! \n");
-			else uart_puts("ca roule chef! \n");
-	aes_encryptWithExpandedKey(tmpOutput, aesTestInput, expandedKey, AES_TYPE_128);
-	if(memcmp(aes128TestOutput, tmpOutput, sizeof(tmpOutput)))uart_puts("ya un blem ! \n");
-	else uart_puts("ca roule chef! \n");*/
-
 	uint8_t plaintext[16]={};
 	uint8_t key[16]={};
 	uint8_t ciphertext[16]={};
 
 	uart_puts("Welcome on the AES cipher board ! \n");
 	while(1){
-		// char input [50]="\0";
-		// uart_gets(input, 50);
 		char cmd = uart_getc();
 
 		switch (cmd){
@@ -98,21 +89,14 @@ int main(void) {
 				break;
 			case 'p':
 				// plaintext[16]: Send plaintext.
-				//uart_puts("\nSend plaintext\n");
-				//send_plain_text(input);
 				uart_get_data(plaintext,16);
-				//uart_puts("\plaintext received !\n");
 				break;
 			case 'k':
 				// 'k' + key[16]: Send key.
-				//uart_puts("\nSend key\n");
 				uart_get_data(key,16);
-				//uart_puts("\key received !\n");
-				//send_key(input);
 				break;
 			case 'g':
 				// 'g' Go, execute AES encryption
-				//uart_puts("\nGo, execute AES encryption\n");
 				aes_128(plaintext, key, ciphertext);
 				break;
 			case 'c':
@@ -120,13 +104,14 @@ int main(void) {
 				send_ciphertext(ciphertext);
 				break;
 			case 'f':
-				// uart_puts("\nFast mode, send plaintext, execute AES and give the ciphertext back. Expect 16 bytes corresponding to the ciphertext.\n");
+				// 'f' + plaintext[16]: Fast mode, send plaintext, execute AES and give the ciphertext back. Expect 16 bytes corresponding to the ciphertext.
 				uart_get_data(plaintext,16);
 				aes_128(plaintext, key, ciphertext);
 				send_ciphertext(ciphertext);
 				break;
 			default:
-				uart_puts("\nIncorrect command\n");
+				break;
+				// Incorrect command
 		}
 	}
 }
