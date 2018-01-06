@@ -6,6 +6,10 @@
 #include <string.h>
 #include "usart.h"
 #include "aes.h"
+#include "lcd.h"
+
+
+
 
 # define F_CPU 8000000
 # define USART_BAUDRATE 9600
@@ -71,43 +75,60 @@ void send_ciphertext(uint8_t* ciphertext){
 	}
 }
 
+
 int main(void) {
 	uart_init(USART_BAUDRATE);
+	dispinit();
+	DDRC = 0x03F;  //Set LCD Port Direction
 
 	uint8_t plaintext[16]={};
 	uint8_t key[16]={};
 	uint8_t ciphertext[16]={};
 
 	uart_puts("Welcome on the AES cipher board ! \n");
+	 display("Welcome on the",1);
+	 display("AES cipher board",2);
 	while(1){
 		char cmd = uart_getc();
 
 		switch (cmd){
 			case 't':
 				uart_puts("OK\n");
+				display("Test connection..",1);
+				display("returns \"OK\"",2);
 				// 't': Test connection, return a String if the command is received.
 				break;
 			case 'p':
 				// plaintext[16]: Send plaintext.
 				uart_get_data(plaintext,16);
+				display("Send plaintext..",1);
+				display("",2);
 				break;
 			case 'k':
 				// 'k' + key[16]: Send key.
 				uart_get_data(key,16);
+				display("Send key..",1);
+				display("",2);
 				break;
 			case 'g':
 				// 'g' Go, execute AES encryption
 				aes_128(plaintext, key, ciphertext);
+				display("Go.. execute",1);
+				display(" AES encryption",2);
 				break;
 			case 'c':
 				// 'c' Get ciphertext, expect 16 bytes corresponding to the ciphertext.
 				send_ciphertext(ciphertext);
+				display("Get ciphertext..",1);
+				display("",2);
 				break;
 			case 'f':
 				// 'f' + plaintext[16]: Fast mode, send plaintext, execute AES and give the ciphertext back. Expect 16 bytes corresponding to the ciphertext.
 				uart_get_data(plaintext,16);
 				aes_128(plaintext, key, ciphertext);
 				send_ciphertext(ciphertext);
+				display("Fast mode..",1);
+				display("",2);
 				break;
 			default:
 				break;
